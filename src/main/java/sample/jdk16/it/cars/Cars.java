@@ -1,4 +1,4 @@
-package sample.jdk16.it;
+package sample.jdk16.it.cars;
 
 import java.util.*;
 import java.util.stream.Collectors;
