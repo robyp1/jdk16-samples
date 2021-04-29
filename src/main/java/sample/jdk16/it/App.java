@@ -45,6 +45,7 @@ public class App
      * @throws JsonProcessingException
      */
     public static void main( String[] args ) throws JsonProcessingException {
+        //list of jdk9+
         Car c1= new Car("1d","alfa Romeo", "Giulietta");
         Car c2= new Car("2d","alfa Romeo", "Giulia");
         Car c3= new Car("3d","alfa Romeo", "Stelvio");
@@ -66,7 +67,29 @@ public class App
                 .map(style -> createNode(style)).collect(JsonCollector.toJsonArrayCollector());
         String jsonArrayResultString = new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(resultArr);
         System.out.println(jsonArrayResultString);
+
+
+        DAY day = DAY.MONDAY;
+        DAY day2 = DAY.SATURDAY;
+        //Expression switch Jdk14+
+        System.out.println("Monday day active = " + isActiveDay(day));
+        System.out.println("Saturday day active = " + isActiveDay(day2));
     }
+
+    private static boolean isActiveDay(DAY day) {
+        //Expression switch Jdk14+
+        boolean active = switch (day){
+                case MONDAY, TUESDAY, WEDSNEDAY, THURSDAY, FRIDAY -> true;
+            case SATURDAY -> {
+                boolean val =( System.currentTimeMillis() % 2 == 0 ) ? true : false;
+                yield val;
+            }
+            case SUNDAY -> false;
+            default -> false;
+        };
+        return active;
+    }
+
 
     private static Optional<Rectangle> readFromFile( String fileName, Function<String, Optional<Rectangle>> reader) {
         return reader.apply(fileName);
@@ -82,5 +105,9 @@ public class App
         ObjectNode nodeJson = mapper.createObjectNode();
         nodeJson.put("style", inputAttribute);
         return nodeJson;
+    }
+
+    enum DAY {
+        MONDAY,TUESDAY, WEDSNEDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY;
     }
 }
