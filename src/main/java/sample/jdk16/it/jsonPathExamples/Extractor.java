@@ -1,6 +1,7 @@
 package sample.jdk16.it.jsonPathExamples;
 
 import com.jayway.jsonpath.Criteria;
+import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
 import sample.jdk16.it.geometry.Rectangle;
 
@@ -33,7 +34,6 @@ public class Extractor {
 
     public static void extractFromJson(Rectangle rectangle){
         System.out.println(rectangle);
-        String rect = JSON_TO_TEST;
         //enable IntelliLang plugin
         //alt + invio "inject language or reference"
         //alt+ invio "evaluate json path"
@@ -42,13 +42,14 @@ public class Extractor {
         String pathFilterAllAttr = "$.*.attribute[*]";//raccolgo  tutti gli attribute di tutti i nodi
         String pathFilterAllAttr0= "$.*[?].attribute[0]";//? per il filtro, leggo tutti i nodi e in ogni nodo filtro per "?" e prendo la posizione ' dell0'array attribute
         String pathFilterFirstAttr = "$.a.attribute[0]";//nodo a prendo valore posizione 0 nell'array attribute
-        List<String> attributes = JsonPath.parse(rect).read(pathFilterAllAttr);
+        DocumentContext parsedJsonString = JsonPath.parse(JSON_TO_TEST);
+        List<String> attributes = parsedJsonString.read(pathFilterAllAttr);
         System.out.println(attributes);
-        String attributes2 = JsonPath.parse(rect).read(pathFilterFirstAttr);
+        String attributes2 = parsedJsonString.read(pathFilterFirstAttr);
         System.out.println(attributes2);
         //qui passo il filtro che verrà applicato ai nodi * secondo il Criteria query widht = 40 (di tutti prendi solo quello con width =40)
         //per cui estrai poi la posizione 0 dell'array attribute
-        List<String> attributesDotted = JsonPath.parse(rect).read(pathFilterAllAttr0, Criteria.where("width").eq(40));
+        List<String> attributesDotted = parsedJsonString.read(pathFilterAllAttr0, Criteria.where("width").eq(40));
         System.out.println(attributesDotted);
     }
 }
