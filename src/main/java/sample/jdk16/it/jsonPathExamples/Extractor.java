@@ -9,24 +9,27 @@ import java.util.List;
 public class Extractor {
 
     //esempio di String text-block, nuova scrittura per string
+    // la riga con \ -> serve per indicare che non c'è a capo, mentre per le altre righe \n è implicito
+    // https://www.baeldung.com/java-text-blocks
     public static final String JSON_TO_TEST = """
             {
                     a: {"width": 20,
                             "length": 60,
                             "attribute": [
                     "solid",
-                            "black"
+                            "%s"
                     ]},
                     b: {
                     "width": 40,
                             "length": 60,
                             "attribute": [
                     "dotted",
-                            "red"
+                            "re \
+                            d"
                     ]}
                     
             }
-            """;
+            """.formatted("red");//è come String.format
 
     public static void extractFromJson(Rectangle rectangle){
         System.out.println(rectangle);
