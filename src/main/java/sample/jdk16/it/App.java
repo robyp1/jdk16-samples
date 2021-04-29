@@ -41,6 +41,14 @@ public class App
      * }, {
      *   "style" : "dotted"
      * } ]
+     *
+     * Monday day active = true
+     * Saturday day active = true
+     *
+     * java.lang.NullPointerException: Cannot invoke "com.fasterxml.jackson.databind.ObjectMapper.createObjectNode()"
+     * ---> because "a.o" is null <---
+     * 	at sample.jdk16.it.App.main(App.java:87)
+     *
      * @param args
      * @throws JsonProcessingException
      */
@@ -68,6 +76,22 @@ public class App
         String jsonArrayResultString = new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(resultArr);
         System.out.println(jsonArrayResultString);
 
+        //jdk11+ var not typesafe
+        var a = new Object(){
+            ObjectMapper o = new ObjectMapper();
+        };
+        /**
+         * if jdk14-15 call java with argument -XX:+ShowCodeDetailsInExceptionMessages (since jdk 14+)
+         * Exception in thread "main" java.lang.NullPointerException: Cannot invoke "com.fasterxml.jackson.databind.ObjectMapper.createObjectNode()"
+         *  because "a.o" is null <--- dice quale esattamente è null! in jdk16 non serve il flag
+         * 	at sample.jdk16.it.App.main(App.java:80)
+         */
+        a.o=null;//apposta per generare nullpointer (npe)
+        try {
+            a.o.createObjectNode();
+        }catch (NullPointerException ex){
+            ex.printStackTrace();
+        }
 
         DAY day = DAY.MONDAY;
         DAY day2 = DAY.SATURDAY;
@@ -85,7 +109,7 @@ public class App
                 yield val;
             }
             case SUNDAY -> false;
-            default -> false;
+            //default -> false; non uso default perchè con gli enum il compilatore verifica che ci siano tutti
         };
         return active;
     }
