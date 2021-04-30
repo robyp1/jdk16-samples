@@ -98,13 +98,6 @@ public class App
         //Expression switch Jdk14+
         System.out.println("Monday day active = " + isActiveDay(day));
         System.out.println("Saturday day active = " + isActiveDay(day2));
-
-        //maybe in the future..
-//        Object carobj = new Car("","","");
-//
-//        if (carobj instanceof Car(var a, var b, var c)  ){
-//              String manufacture = a;
-//        }
     }
 
     private static boolean isActiveDay(DAY day) {

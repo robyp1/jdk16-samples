@@ -35,7 +35,6 @@ public class JackSonWriter {
             e.printStackTrace();
         }
         Optional<Rectangle> r = Optional.empty();
-        //JDK16 new cast with assign inline
         if (retValue instanceof Rectangle rectVal){
             r = Optional.of(rectVal);
         }
