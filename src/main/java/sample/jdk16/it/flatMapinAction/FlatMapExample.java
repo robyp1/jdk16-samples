@@ -1,12 +1,17 @@
 package sample.jdk16.it.flatMapinAction;
 
-import javax.swing.text.html.Option;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class FlatMapExample {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
         Developer o1 = new Developer();
         o1.setName("mkyong");
@@ -45,8 +50,25 @@ public class FlatMapExample {
         Employee employee = new Employee();
         getInsuranceName(Optional.of(employee));//of perchè employee non può essere nullo, è mandatory
 
+        //READ a FILE, split lines adn count
 
+        Path path = Paths.get("C:\\test\\test.txt");
 
+        // read file into a stream of lines
+        Stream<String> lines = Files.lines(path, StandardCharsets.UTF_8);
+
+        // stream of array...hard to process.
+        // Stream<String[]> words = lines.map(line -> line.split(" +"));
+
+        // stream of stream of string....hmm...better flat to one level.
+        // Stream<Stream<String>> words = lines.map(line -> Stream.of(line.split(" +")));
+
+        // result a stream of words, good!
+//        Stream<String[]> stream = lines.map(line -> line.split(" +")); //no torna un Stream di array, l'array contenente gli elementi dello split
+        Stream<String> words = lines.flatMap(line -> Stream.of(line.split(" +"))); //ok con flatMap
+
+        // count the number of words.
+        long noOfWords = words.count();
     }
 
 
